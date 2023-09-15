@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+ <!-- 현재 파일명 : action-servlet.xml 파일 -->
+<!--  <bean id="viewResolver" 부터 	</bean>
+ -->
+<!-- 
+스프링 MVC 구조를 공부하기위한 , 간단한 구조의 스프링 MVC 버전. 
+순서
+웹브라우저가 -> 주소: url : http://localhost:8080/pro21/test/index.do
+
+web.xml 설정 파일에서  설정한 부분 
+1) action 서블릿이름을 가진 인스턴스는 서버가 켜지면 메모리 로드하자. 
+2) url 주소에서 *.do 는 주소는 전부, action 서블릿이 처리 하겠다라고 설정.
+
+action-servlet.xml 파일에서 설정 여기.
+일반적인 인스턴스 생성 방법 , 생성자를 이용해서 초기화. 
+SimpleUrlController simpleUrlController = new SimpleUrlController();
+첫번째 인스턴스 참조형 변수 이름 : simpleUrlController
+서버 시작시, 항상 메모리에 올라와 있어서, 사용하기 편하다.  -->
+<bean id="simpleUrlController" class="com.spring.ex01.SimpleUrlController"/>
+<!-- 두번째 인스턴스 : urlMapping
+실제로, 참고용 , 하나의 주소만을 설정해서, 들어오는 주소를 정하는 설정.
+나가는 주소, index.jsp 
+서버 재시작. -->
+<!-- <bean id="urlMapping"
+  class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+  <property  name="mappings">
+    <props>
+      <prop key="/test/index33.do">simpleUrlController</prop>
+    </props>
+  </property>  
+</bean> -->
+
+  <!-- 뷰를 중개하는 담당자  -->
+  <!-- viewResolver -> 뷰 파일들의 공통 부모 경로와, 공통 확장자를 미리 정의 해두기 -->
+  <!-- 예 ) /test/index.jsp ->  index   --> 
+ 	 <!-- 원본 코드. --> 
+ 	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/test/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+<!-- url 주소가 : /test/*.do , 이 부분에 대해서 다 처리하겠다(userController) 의미 --> 
+	<bean id="userUrlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/test/*.do">userController</prop>
+			</props>
+		</property>
+	</bean>
+
+<!-- userController : -> /test/*.do 끝나는 url 주소에 대해서 모두 받아서 처리하겠다. -->
+	<bean id="userController" class="com.spring.ex02.UserController">
+		<property name="methodNameResolver">
+			<ref local="userMethodNameResolver" />
+		</property>
+	</bean>
+
+	<bean id="userMethodNameResolver"
+		  class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+		<property name="mappings">
+			<props>
+			<!-- /test/login.do -> login 이라는 이름의 메서드 를 호출 -->
+				<prop key="/test/login.do">login</prop>
+				<prop key="/test/memberInfo.do">memberInfo</prop> 
+			</props>
+		</property>
+	</bean> 
+	
+	<!-- 이상용 과제제출 230908
+	자바 :com.spring.lsyTest0908
+	뷰: testLsy0908
+	-->
+	<!-- <bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/testLsy0908/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+url 주소가 : /test/*.do , 이 부분에 대해서 다 처리하겠다(userController) 의미 
+	<bean id="userUrlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/test/*.do">userController</prop>
+			</props>
+		</property>
+	</bean>
+
+userController : -> /test/*.do 끝나는 url 주소에 대해서 모두 받아서 처리하겠다.
+	<bean id="userController" class="com.spring.lsyTest0908.UserController">
+		<property name="methodNameResolver">
+			<ref local="userMethodNameResolver" />
+		</property>
+	</bean>
+
+	<bean id="userMethodNameResolver"
+		  class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+		<property name="mappings">
+			<props>
+			/test/login.do -> login 이라는 이름의 메서드 를 호출
+			joinForm의 action 값 변경하고,
+			컨트롤러의 기존 login -> join 변경
+				<prop key="/test/join.do">join</prop>
+				<prop key="/test/memberInfo.do">memberInfo</prop> 
+			</props>
+		</property>
+	</bean> -->
+
+</beans>
