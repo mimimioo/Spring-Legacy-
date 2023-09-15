@@ -5,13 +5,13 @@ import org.aopalliance.intercept.MethodInvocation;
 
 public class LoggingAdvice implements MethodInterceptor {
 	public Object invoke(MethodInvocation invocation) throws Throwable {
-		System.out.println("[¸Ş¼­µå È£Ãâ Àü : LogginAdvice");
-		System.out.println(invocation.getMethod() + "¸Ş¼­µå È£Ãâ Àü");
+		System.out.println("[ï¿½Ş¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½ ï¿½ï¿½ : LogginAdvice");
+		System.out.println(invocation.getMethod() + "ï¿½Ş¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½ ï¿½ï¿½");
 
 		Object object = invocation.proceed();
 
-		System.out.println("[¸Ş¼­µå È£Ãâ ÈÄ : loggingAdvice");
-		System.out.println(invocation.getMethod() + "¸Ş¼­µå È£Ãâ ÈÄ");
+		System.out.println(" ì´ì¬ì˜ ê³¼ì œ ");
+		System.out.println(invocation.getMethod() + "ï¿½Ş¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½ ï¿½ï¿½");
 		return object;
 	}
 }
