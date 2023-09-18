@@ -35,9 +35,13 @@ public class MemberControllerImpl   implements MemberController {
 	@Override
 	@RequestMapping(value="/member/listMembers.do" ,method = RequestMethod.GET)
 	public ModelAndView listMembers(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String viewName = getViewName(request);
-//		String viewName = (String)request.getAttribute("viewName");
-		//System.out.println("viewName: " +viewName);
+		// 컨트롤러 내부에 있는 뷰이름을 가져오는 메서드 이용
+//		String viewName = getViewName(request);
+		// 인터셉터를 이용해서, 
+		// 컨트롤러에 도착하기 전에, 먼저 뷰이름을 가져와서, -> 컨트롤러 -> request 
+		// 담아서 보내기. 
+		String viewName = (String)request.getAttribute("viewName");
+		System.out.println("인터셉터를 이용해서 viewName 사용하기: " +viewName);
 //		logger.info("viewName: "+ viewName);
 //		logger.debug("viewName: "+ viewName);
 		List membersList = memberService.listMembers();

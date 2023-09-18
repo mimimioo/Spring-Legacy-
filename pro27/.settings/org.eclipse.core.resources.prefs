@@ -1,2 +1,3 @@
 eclipse.preferences.version=1
-encoding//src/main/java/com/myspring/pro27/common/log/LoggingAdvice.java=UTF-8
+encoding//src/main/java/com/myspring/pro27/member/controller/MemberControllerImpl.java=UTF-8
+encoding//src/main/java/com/myspring/pro27/member/interceptor/ViewNameInterceptor.java=UTF-8

@@ -1,15 +1,18 @@
-package com.myspring.pro27.member.interceptor;
+ackage com.myspring.pro27.member.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
+// 
 public class ViewNameInterceptor extends HandlerInterceptorAdapter {
 	@Override
+	// 而⑦듃濡ㅻ윭 �룄�떖�븯湲� �쟾�뿉 �떎�뻾�릺�뒗 硫붿꽌�뱶 : preHandle
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		try {
+			// 誘몃━ 酉� �씠由� 媛��졇�삤�뒗 遺�遺�
 			String viewName = getViewName(request);
+			// request �씤�뒪�꽩�뒪�뿉 �떞湲�. 
 			request.setAttribute("viewName", viewName);
 		} catch (Exception e) {
 			e.printStackTrace();
