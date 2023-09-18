@@ -25,6 +25,7 @@
 	</c:when>
 </c:choose>  
 </head>
+
 <body>
 <form name="frmLogin" method="post"  action="${contextPath}/member/login.do">
    <table border="1"  width="80%" align="center" >

@@ -31,7 +31,7 @@
 	<!-- 여기서 구간을 base-package="com.myspring.pro27.member" -> 로그 확인안되어서 
 	변경하기 -->
 	
-  <context:component-scan	bae-package="com.myspring.pro27" />
+  <context:component-scan	base-package="com.myspring.pro27" />
 
 <!-- 타일즈 실습 설정 -->
  
