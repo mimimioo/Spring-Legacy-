@@ -39,6 +39,15 @@
 		]]>      
 	</insert>
 	
+	<!--단일이미지 답글추가  -->
+	 
+  <insert id="insertReplyNewArticle"  parameterType="java.util.Map">
+		<![CDATA[
+			INSERT into t_board(articleNO, parentNO, title, content, imageFileName, id)
+			VALUES(#{articleNO},#{parentNO}, #{title},	#{content}, #{imageFileName},	#{id})
+		]]>      
+	</insert>
+	
 	<!-- 다음 게시글 번호를 생성해주는 디비  -->
   <select id="selectNewArticleNO" resultType="int"  >
 		<![CDATA[

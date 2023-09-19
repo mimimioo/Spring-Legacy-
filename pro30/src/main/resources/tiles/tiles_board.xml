@@ -17,5 +17,11 @@
     <put-attribute name="title" value="글상세창" />
     <put-attribute name="body" value="/WEB-INF/views/board/viewArticle.jsp" />
   </definition>
+  
+  <!-- 답글 폼 추가 replyForm -->
+  <definition name="/board/replyForm" extends="baseLayout">
+    <put-attribute name="title" value="답글창" />
+    <put-attribute name="body" value="/WEB-INF/views/board/replyForm.jsp" />
+  </definition>
 	
 </tiles-definitions>

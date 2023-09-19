@@ -41,6 +41,17 @@
      <td >제목</td>
      <td >작성일</td>
   </tr>
+  <!-- 게시글 있다면  -->
+  <!-- varStatus , 인덱스와 비슷한데, 갯수를 1부터 숫자세기 용도. -->
+  <%-- ${articleNum.count} -> 1부터 시작함 --%>
+  <!-- article.level 클수로 하위 계층으로 가고, 0이 부모글 , 레벨1, 
+	   예) 게시글1의 0 -> 1번 답변글 레벨1 -> 1번 답변 답변글 레벨2 -->
+	    <!-- 답글시 뷰에서 왼쪽으로 들여쓰기 20px 만큼 --> 
+	    <%-- 클라이언트 뷰 목록에서, 해당 게시글의 제목 클릭시 이동할 링크에 ? 파라미터로 전달된 
+	         요소 : articleNO=${article.articleNO} , 서버에 게시글 번호를 전달
+	         그 게시글 번호의 정보를 , 동네 1 ~ 4 순회해서, 해당 뷰에 게시글 정보를 출력
+	         예) 수정폼, 수정할 회원의 정보를 디비에서 가져와야함.  --%>
+	         <!-- 게시글이 답글이 아닌경우, 부모글이라고 표현. -->
 <c:choose>
   <c:when test="${articlesList ==null }" >
     <tr  height="10">
@@ -51,32 +62,29 @@
       </td>  
     </tr>
   </c:when>
-  <!-- 게시글 있다면  -->
+  
   <c:when test="${articlesList !=null }" >
-  <!-- varStatus , 인덱스와 비슷한데, 갯수를 1부터 숫자세기 용도. -->
+  
     <c:forEach  var="article" items="${articlesList }" varStatus="articleNum" >
      <tr align="center">
-     <%-- ${articleNum.count} -> 1부터 시작함 --%>
+     
 	<td width="5%">${articleNum.count}</td>
 	<td width="10%">${article.id }</td>
 	<td align='left'  width="35%">
 	  <span style="padding-right:30px"></span>
+	   
 	   <c:choose>
-	   <!-- article.level 클수로 하위 계층으로 가고, 0이 부모글 , 레벨1, 
-	   예) 게시글1의 0 -> 1번 답변글 레벨1 -> 1번 답변 답변글 레벨2 --> 
+	  
 	      <c:when test='${article.level > 1 }'>  
-	      <!-- 답글시 뷰에서 왼쪽으로 들여쓰기 20px 만큼 -->
+	     
 	         <c:forEach begin="1" end="${article.level }" step="1">
 	              <span style="padding-left:20px"></span>    
 	         </c:forEach>
 	         <span style="font-size:12px;">[답변]</span>
-	         <%-- 클라이언트 뷰 목록에서, 해당 게시글의 제목 클릭시 이동할 링크에 ? 파라미터로 전달된 
-	         요소 : articleNO=${article.articleNO} , 서버에 게시글 번호를 전달
-	         그 게시글 번호의 정보를 , 동네 1 ~ 4 순회해서, 해당 뷰에 게시글 정보를 출력
-	         예) 수정폼, 수정할 회원의 정보를 디비에서 가져와야함.  --%>
+	         
                    <a class='cls1' href="${contextPath}/board/viewArticle.do?articleNO=${article.articleNO}">${article.title}</a>
 	          </c:when>
-	          <!-- 게시글이 답글이 아닌경우, 부모글이라고 표현. -->
+	          
 	          <c:otherwise>
 	            <a class='cls1' href="${contextPath}/board/viewArticle.do?articleNO=${article.articleNO}">${article.title }</a>
 	          </c:otherwise>

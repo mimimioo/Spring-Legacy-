@@ -24,6 +24,21 @@ public class BoardDAOImpl implements BoardDAO {
 		return articlesList;
 	}
 
+	// 단일 이미지 답글쓰기
+		@Override
+		public int insertReplyNewArticle(Map articleMap) throws DataAccessException {
+			// 현재, 게시글의 갯수를 이야기를 하고 있음. 
+			// 시퀀스, 게시글 번호를 자동으로 생성하거나, 지금처럼 현재 게시글의 갯수의해서, 
+			// 번호를 부여. 
+			// 새 게시글의 번호를 생성
+			int articleNO = selectNewArticleNO();
+			// 새 게시글의 번호를, 게시글 작성하는 요소로 추가. 
+			articleMap.put("articleNO", articleNO);
+			// articleMap : 게시글의 요소를 다 담아서. 실제 디비에 반영하는 로직. 
+			sqlSession.insert("mapper.board.insertReplyNewArticle",articleMap);
+			return articleNO;
+		}
+	
 	// 단일 이미지 글쓰기
 	@Override
 	public int insertNewArticle(Map articleMap) throws DataAccessException {
@@ -55,11 +70,13 @@ public class BoardDAOImpl implements BoardDAO {
 	
    */
 	
+	// 게시글 번호, 게시글 정보 하나 가져오기.
 	@Override
 	public ArticleVO selectArticle(int articleNO) throws DataAccessException {
 		return sqlSession.selectOne("mapper.board.selectArticle", articleNO);
 	}
 
+	// 단일 이미지, 수정된 내용 적용하기. 
 	@Override
 	public void updateArticle(Map articleMap) throws DataAccessException {
 		sqlSession.update("mapper.board.updateArticle", articleMap);
