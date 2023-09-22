@@ -2,9 +2,13 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" 
    "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
 <beans>
+<!-- 인스턴스 1 , 주기능  -->
    <bean id="calcTarget" class="com.spring.ex01.Calculator" />
+   <!-- 인스턴스2, 보조기능 -->
    <bean id="logAdvice" class="com.spring.ex01.LoggingAdvice" />
    
+   <!-- 주기능, 보조기능 묶음  -->
+   <!-- 인터셉터 기능들 목록 요소에  인스턴스2, 보조기능 추가함 -->
    <bean id="proxyCal"
           class="org.springframework.aop.framework.ProxyFactoryBean">
       <property name="target" ref="calcTarget"/>

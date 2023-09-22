@@ -12,8 +12,10 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import com.spring.ex01.MemberVO;
 
 public class MemberDAO {
+	// 2번째 동네 
 	public static SqlSessionFactory sqlMapper = null;
 
+	// 디비에 접근하는 기능을 리팩토링, 분리 작업했다. 자주 반복적으로 사용되니.
 	private static SqlSessionFactory getInstance() {
 		if (sqlMapper == null) {
 			try {
@@ -50,10 +52,16 @@ public class MemberDAO {
 	return membersList;
 	}
 
+	// 실제 2번째 동네에서 하는 업무인, 추가 작업. 
+	// 포인트, 넘어온 데이터의 타입 문자열이 아니라 -> 인스턴스(객체), 참조형이라는 부분. 
 	public int insertMember(MemberVO memberVO) {
+		// 공통 업무, 디비 접근 하는 기능. 
 		sqlMapper = getInstance();
 		SqlSession session = sqlMapper.openSession();
+		// 상태변수, 값이 추가되었다면, 상태를 표시하는 변수. 
 		int result = 0;
+		// 디비에 sql 문장을 넘기는 업무, -> 3번째 동네인, member.xml 에서 외주를 맡기기
+		// 포인트 , 2번째 매개변수, memberVO , 인스턴스라는 부분. 
 		result = session.insert("mapper.member.insertMember", memberVO);
 		session.commit();
 		return result;
@@ -94,13 +102,15 @@ public class MemberDAO {
     public List<MemberVO>  foreachSelect(List nameList){
         sqlMapper=getInstance();
         SqlSession session=sqlMapper.openSession();
+        // 실제 디비에 접근해서 작업 하는 부분, member.xml , 외주 보내기. 
         List list=session.selectList("mapper.member.foreachSelect",nameList);
         return list;		
     }
-    
+    // 동네 2번이고, 여기서는 , member.xml에 sql 문장을 매핑 하는 곳. 
     public int  foreachInsert(List memList){
         sqlMapper=getInstance();
         SqlSession session=sqlMapper.openSession();
+        // 실제 작업, 외주 맡김. 
         int result = session.insert("mapper.member.foreachInsert",memList);
         session.commit();
         return result ;		

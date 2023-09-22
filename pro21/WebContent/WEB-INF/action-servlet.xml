@@ -45,8 +45,7 @@ SimpleUrlController simpleUrlController = new SimpleUrlController();
   <!-- 뷰를 중개하는 담당자  -->
   <!-- viewResolver -> 뷰 파일들의 공통 부모 경로와, 공통 확장자를 미리 정의 해두기 -->
   <!-- 예 ) /test/index.jsp ->  index   --> 
- 	 <!-- 원본 코드. --> 
-<!--  	<bean id="viewResolver"
+ 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass"
 			value="org.springframework.web.servlet.view.JstlView" />
@@ -54,7 +53,7 @@ SimpleUrlController simpleUrlController = new SimpleUrlController();
 		<property name="suffix" value=".jsp" />
 	</bean>
 
-url 주소가 : /test/*.do , 이 부분에 대해서 다 처리하겠다(userController) 의미 
+<!-- url 주소가 : /test/*.do , 이 부분에 대해서 다 처리하겠다(userController) 의미  -->
 	<bean id="userUrlMapping"
 		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
@@ -64,7 +63,7 @@ url 주소가 : /test/*.do , 이 부분에 대해서 다 처리하겠다(userCon
 		</property>
 	</bean>
 
-userController : -> /test/*.do 끝나는 url 주소에 대해서 모두 받아서 처리하겠다.
+<!-- userController : -> /test/*.do 끝나는 url 주소에 대해서 모두 받아서 처리하겠다. -->
 	<bean id="userController" class="com.spring.ex02.UserController">
 		<property name="methodNameResolver">
 			<ref local="userMethodNameResolver" />
@@ -75,42 +74,8 @@ userController : -> /test/*.do 끝나는 url 주소에 대해서 모두 받아�
 		  class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
 		<property name="mappings">
 			<props>
-			/test/login.do -> login 이라는 이름의 메서드 를 호출
+			<!-- /test/login.do 해당 키에 대한, 컨트롤러의 메서드를 선택하는 항목. : login -->
 				<prop key="/test/login.do">login</prop>
-				<prop key="/test/memberInfo.do">memberInfo</prop> 
-			</props>
-		</property>
-	</bean>  -->
-	
-
-	 <bean id="viewResolver"
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass"
-			value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/testSjw0907/" />
-		<property name="suffix" value=".jsp" />
-	</bean>
-
-	<bean id="userUrlMapping"
-		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-		<property name="mappings">
-			<props>
-				<prop key="/test/*.do">userController</prop>
-			</props>
-		</property>
-	</bean>
-
-	<bean id="userController" class="com.spring.sjwTest0907.UserController">
-		<property name="methodNameResolver">
-			<ref local="userMethodNameResolver" />
-		</property>
-	</bean>
-
-	<bean id="userMethodNameResolver"
-		  class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
-		<property name="mappings">
-			<props>
-				<prop key="/test/join.do">join</prop>
 				<prop key="/test/memberInfo.do">memberInfo</prop> 
 			</props>
 		</property>

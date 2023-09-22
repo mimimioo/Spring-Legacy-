@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd"
+ xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans">
+
+<!-- mybatis -> db 작업의 편의성을 도와주는 도구이고, 
+이 도구가, 어느 디비에 연결를 할지를 우리가 정해준다. 설정 파일로. 
+예) jdbc.properties 
+자주 사용하는 인스턴스를 스프링 컨테이너(시스템)에 등록해서 사용한다. -->
+	<bean id="propertyPlaceholderConfigurer"
+	class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<property name="locations">
+	<value>/WEB-INF/config/jdbc.properties</value>
+	</property>
+	</bean>
+
+<!-- 디비 연결위한 환경요소를 따로 저장해서 관리 및 사용함. -->
+ 	<bean id="dataSource" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+		<property name="driver" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+	
+	<!-- sql 연결을 위한 공장이라고 하니까, 연결을 위한 환경 설정 파일을 관리한다. -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 참조, 포함, DI , 의존성 주입 -> 다른 요소를 가져와서 사용한다. -->
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation"
+			value="classpath:mybatis/model/modelConfig.xml" />
+		<property name="mapperLocations" value="classpath:mybatis/mappers/*.xml" />
+	</bean>
+
+<!-- sql에 접근하기 위한 메서드들을 관리하는 클래스  -->
+	<bean id="sqlSession"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+
+<!-- 비유 동네 순서를 쉽게 표현하기위해서 사용. 3번째 -->
+<!-- 데이터 접근을 하기위한 객체들의 모음집 , DAO (Data Access Object)
+실제 데이터 접근은 sqlsession , mybatis 이용함.  -->
+<!-- 230913 변경함 --> 
+	<bean id="memberDAO"
+		class="com.spring.member.dao.lsy0913.MemberDAOImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+
+</beans>

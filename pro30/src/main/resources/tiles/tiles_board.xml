@@ -23,5 +23,11 @@
     <put-attribute name="title" value="답글창" />
     <put-attribute name="body" value="/WEB-INF/views/board/replyForm.jsp" />
   </definition>
+  
+    <!-- 수정 폼 추가 modForm -->
+  <definition name="/board/modForm" extends="baseLayout">
+    <put-attribute name="title" value="수정창" />
+    <put-attribute name="body" value="/WEB-INF/views/board/modForm.jsp" />
+  </definition>
 	
 </tiles-definitions>

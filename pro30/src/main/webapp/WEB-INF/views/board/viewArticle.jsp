@@ -4,11 +4,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
-<%-- 다중 이미지의 상세보기시 사용할 예정. 
+<%-- 다중 이미지의 상세보기시 사용할 예정.--%> 
+<!-- 일반 데이터가 담겨 있고 -->
 <c:set var="article"  value="${articleMap.article}"  />
+<!-- 파일 이미지 이름 목록 담겨져 있음. -->
 <c:set var="imageFileList"  value="${articleMap.imageFileList}"  />
 
- --%>
+ 
 <%
   request.setCharacterEncoding("UTF-8");
 %> 
@@ -24,7 +26,7 @@
        display:none;
      }
      #preview{
-      width: 70%
+      width: 30%
      }
    
    </style>
@@ -37,6 +39,7 @@
      }
  
    /* 해당 아이디의 속성을 한번에 변경하는 함수 */
+   // 수정하기 눌렀을 때, 각 디브 태그 아이디의 활성화 상태
 	 function fn_enable(obj){
 		 document.getElementById("i_title").disabled=false;
 		 document.getElementById("i_content").disabled=false;
@@ -48,7 +51,7 @@
 	 
    /* 수정폼으로 이동하는 함수 */
 	 function fn_modify_article(obj){
-		 obj.action="${contextPath}/board/modArticle.do";
+		 obj.action="${contextPath}/board/modForm.do";
 		 obj.submit();
 	 }
 	 
@@ -58,6 +61,8 @@
    지금 inner HTML이라고 해서, 동적으로 개발작, 폼 요소, 속성, 임의로 만들어서 
    html 문서에 주입을 하는 형식. */
 	 function fn_remove_article(url,articleNO){
+		  var shouldDelete = confirm("정말 삭제 할까요?");
+		  if (shouldDelete){
 	   /* 동적으로 form 태그를 만들기 */
 		 var form = document.createElement("form");
 	   /* form 요소에, 속성으로, 전달 방식 post, action : 전송 폼에서 submit 클릭시
@@ -77,6 +82,7 @@
 	     document.body.appendChild(form);
 	     /* 서버에 전달을 한다. action의 속성의 값의 위치로 이동 */
 	     form.submit();
+		  }
 	 
 	 }
 	 
@@ -154,7 +160,7 @@
     <textarea rows="20" cols="60"  name="content"  id="i_content"  disabled />${article.content }</textarea>
    </td>  
   </tr>
- <%-- 
+ <!-- 다중 이미지 출력 부분 -->
  <c:if test="${not empty imageFileList && imageFileList!='null' }">
 	  <c:forEach var="item" items="${imageFileList}" varStatus="status" >
 		    <tr>
@@ -168,12 +174,12 @@
 			  </tr>  
 			  <tr>
 			    <td>
-			       <input  type="file"  name="imageFileName " id="i_imageFileName"   disabled   onchange="readURL(this);"   />
+			    <!--    <input  type="file"  name="imageFileName " id="i_imageFileName"   disabled   onchange="readURL(this);"   /> -->
 			    </td>
 			 </tr>
 		</c:forEach>
  </c:if>
- 	 --%>    
+ 	  
  	 
   <c:choose> 
 	  <c:when test="${not empty article.imageFileName && article.imageFileName!='null' }">
@@ -189,7 +195,7 @@
 		  <tr>
 		    <td ></td>
 		    <td>
-		       <input  type="file"  name="imageFileName " id="i_imageFileName"   disabled   onchange="readURL(this);"   />
+		       <!-- <input  type="file"  name="imageFileName " id="i_imageFileName"   disabled   onchange="readURL(this);"   /> -->
 		    </td>
 		  </tr> 
 		 </c:when>
@@ -206,7 +212,7 @@
 				    <td ></td>
 				    <td>
 				       <img id="preview"  /><br>
-				       <input  type="file"  name="imageFileName " id="i_imageFileName"   disabled   onchange="readURL(this);"   />
+				       <!-- <input  type="file"  name="imageFileName " id="i_imageFileName"   disabled   onchange="readURL(this);"   /> -->
 				    </td>
 			  </tr>
 		 </c:otherwise>
@@ -229,7 +235,9 @@
   <tr  id="tr_btn"    >
    <td colspan="2" align="center">
        <c:if test="${member.id == article.id }">
-	      <input type=button value="수정하기" onClick="fn_enable(this.form)">
+       
+       <input type=button value="수정하기" onClick="fn_modify_article(this.form)">
+	      <!-- <input type=button value="수정하기" onClick="fn_enable(this.form)"> -->
 	      <input type=button value="삭제하기" onClick="fn_remove_article('${contextPath}/board/removeArticle.do', ${article.articleNO})">
 	    </c:if>
 	    <input type=button value="리스트로 돌아가기"  onClick="backToList(this.form)">

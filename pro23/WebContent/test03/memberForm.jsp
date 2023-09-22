@@ -3,6 +3,7 @@
     isELIgnored="false" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!-- 백 (서버)의 주소를 , 다 입력보다, taglib 주소를 쉽게 알아냄. 미리 변수에 등록해서 사용함 -->
 <c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
 <%
    request.setCharacterEncoding("UTF-8");
@@ -19,6 +20,12 @@
 </style>
 </head>
 <body>
+<!-- get, post 방식의 차이점, get 길이 제한, 보안상 url 주소다 남음. 
+이런 부분 고려해서 작업, 회원가입 id,pw 민감정보 있어서, post 한다.  -->
+<!-- 뷰 -> 서버에 전달하는데 -> 수신호를 action 문자열에 담아서 서버에 전달.
+action=insertMember -->
+<!-- name 별로 서버에서 일단 각각 가져오는 부분에 이용됨. -> id,pwd,name,email. --> 
+	<%-- <form method="post"   action="${contextPath}/mem4.do?action=insertMember"> --%>
 	<form method="post"   action="${contextPath}/mem4.do?action=insertMember2">
 	<h1  class="text_center">회원 가입창</h1>
 	<table  align="center">

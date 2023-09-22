@@ -9,8 +9,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
    <!-- 데이터의 결과를 한번에 담는 모델 클래스  -->
    <!-- 양방향, 백에서 특정의 조건을 모델 클래스에 담아서 전달도 함 -->
       <typeAlias type="com.spring.ex01.MemberVO" alias="memberVO"/>
-      <!-- 0911과제
-      <typeAlias type="com.spring.sjw0911.MemberVO" alias="memberVO"/> -->
    </typeAliases>
 
 <!-- 디비에 연결을 위한 기본 설정 -->
@@ -22,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
             <property name="driver"  value="oracle.jdbc.driver.OracleDriver" />
             <property  name="url"    value="JDBC:oracle:thin:@localhost:1521:XE" />
             <property name="username" value="system" />
-            <property name="password"  value="oracle"/>        
+            <property name="password"  value="1234"/>        
         </dataSource>
      </environment>
    </environments>

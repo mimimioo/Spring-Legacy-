@@ -20,13 +20,19 @@ public class ImageVO {
 		return imageFileName;
 	}
 	public void setImageFileName(String imageFileName) {
-		try {
+		
+		// 해결 1, 인코딩 안하기.
 			if(imageFileName!= null && imageFileName.length()!=0) {
-				this.imageFileName = URLEncoder.encode(imageFileName,"UTF-8");
+				this.imageFileName = imageFileName;
 			}
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		// 해결2, 인코딩 인 경우
+//		try {
+//			if(imageFileName!= null && imageFileName.length()!=0) {
+//				this.imageFileName = URLEncoder.encode(imageFileName,"UTF-8");
+//			}
+//		} catch (UnsupportedEncodingException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	public Date getRegDate() {

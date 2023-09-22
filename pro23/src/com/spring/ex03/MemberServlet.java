@@ -56,22 +56,14 @@ public class MemberServlet extends HttpServlet {
 			List<MemberVO> membersList = dao.selectMemberByPwd(pwd);
 			request.setAttribute("membersList", membersList);
 			nextPage = "test02/listMembers.jsp";
-		}
-		
-		else if (action.equals("selectMemberByName")) {
+			// 위에 패스워드를 이용해서 검색하는 조건을 벤치마킹
+		}else if (action.equals("selectMemberByName")) {
 			String id = request.getParameter("value");
-			System.out.println("확인1 : 넘어온 키워드 값 value의 값 조회 : " + id);
+			System.out.println("확인1 : 넘어온 키워드 값 value의 값 조회 : "+ id);
 			// value -> 사용자가 검색하기 위한 키워드를 -> id 라는 변수에 담아서 전달하구나.
+			// 변경
 			List<MemberVO> membersList = dao.selectMemberByName(id);
-			request.setAttribute("membersList", membersList);
-			nextPage = "test02/listMembers.jsp";
-		}
-		
-		else if (action.equals("selectMemberByEmail")) {
-			String id = request.getParameter("value");
-			System.out.println("확인1 : 넘어온 키워드 값 value의 값 조회 : " + id);
-			// value -> 사용자가 검색하기 위한 키워드를 -> id 라는 변수에 담아서 전달하구나.
-			List<MemberVO> membersList = dao.selectMemberByEmail(id);
+			// 갔다와서 다시 보자.
 			request.setAttribute("membersList", membersList);
 			nextPage = "test02/listMembers.jsp";
 		}

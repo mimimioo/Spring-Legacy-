@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+<!-- 뷰가 모여있는 폴더위치를 알려주고, 반복되는 경로,확장자를 미리 선언해서, 
+파일명으로만 사용하기위서 쓰는 도구 -->
+<bean id="viewResolver" 
+      class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+      <property  name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+      <property  name="prefix" value="/WEB-INF/views/" />
+      <property  name="suffix" value=".jsp" />
+   </bean>
+   
+   <!-- 클라이언트로 부터 전달받은 명령어를 처리하는 컨트롤로 -->
+   <bean id="memberController" 
+                            class="com.spring.member.controller.MemberControllerImpl">
+      <property name="methodNameResolver">
+         <ref local="methodResolver"/>
+      </property>
+      <property name="memberService" ref="memberService"/>
+</bean>
+
+<!-- 매핑 주소에 맞는 , 메서드를 연결 시켜주는 도구 -->
+    <bean  id="methodResolver"
+   class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver" >
+      <property  name="mappings" >
+        <props>
+          <prop key="/member/listMembers.do" >listMembers</prop>
+          <prop key="/member/addMember.do" >addMember</prop>
+          <prop key="/member/memberForm.do" >memberForm</prop>
+          <prop key="/member/memberDetail.do">memberDetail</prop>
+       </props>
+      </property>
+   </bean>
+   
+   <!-- /member/*.do 끝나는 구조는 모두 -> memberController 처리한다.  -->
+   <bean id="userUrlMapping"
+       class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+      <property name="mappings">
+         <props>
+            <prop key="/member/*.do">memberController</prop>
+         </props>
+      </property>
+   </bean>
+</beans>

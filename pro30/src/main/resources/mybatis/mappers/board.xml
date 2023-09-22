@@ -32,21 +32,23 @@
   
 	<!--단일이미지 추가  -->
 	 
-  <insert id="insertNewArticle"  parameterType="java.util.Map">
+<!--   <insert id="insertNewArticle"  parameterType="java.util.Map">
 		<![CDATA[
 			INSERT into t_board(articleNO,  title, content, imageFileName, id)
 			VALUES(#{articleNO},#{title},	#{content}, #{imageFileName},	#{id})
 		]]>      
-	</insert>
+	</insert> -->
 	
 	<!--단일이미지 답글추가  -->
 	 
   <insert id="insertReplyNewArticle"  parameterType="java.util.Map">
 		<![CDATA[
 			INSERT into t_board(articleNO, parentNO, title, content, imageFileName, id)
-			VALUES(#{articleNO},#{parentNO}, #{title},	#{content}, #{imageFileName},	#{id})
+			VALUES(#{articleNO},#{parentNO}, #{title},	#{content}, null,	#{id})
 		]]>      
 	</insert>
+	
+	
 	
 	<!-- 다음 게시글 번호를 생성해주는 디비  -->
   <select id="selectNewArticleNO" resultType="int"  >
@@ -62,6 +64,7 @@
     ]]>
   </select>
   
+  <!-- 단일 이미지 버전의 수정하기 로직,  -->
   <update id="updateArticle"  parameterType="java.util.Map">
 			update t_board
 			set title=#{title},	 
@@ -69,6 +72,14 @@
 			 <if test="imageFileName!='' and imageFileName!=null">
 			  , imageFileName=#{imageFileName}
 			</if>
+			where articleNO=#{articleNO}
+	</update>
+	
+	 <!-- 다중 이미지 버전의 수정하기 로직,  일반 글만 수정하기.  -->
+  <update id="updateArticle2"  parameterType="java.util.Map">
+			update t_board
+			set title=#{title},	 
+			content=#{content}
 			where articleNO=#{articleNO}
 	</update>
 	
@@ -81,9 +92,17 @@
          CONNECT BY PRIOR  articleNO = parentNO )
     ]]>      
   </delete>
+  
+  	<delete id="deleteImage"  parameterType="int">
+    <![CDATA[
+      delete from t_imageFile
+      where imageFileNO  = #{imageFileNO}
+         
+    ]]>      
+  </delete>
 
  <!--다중 이미지 추가 SQL문 -->   
-  <!--
+<!-- 일반 데이터를 디비에 저장 -->
     <insert id="insertNewArticle"  parameterType="java.util.Map">
     <![CDATA[
       insert into t_board(articleNO, id, title, content, imageFileName)
@@ -91,6 +110,9 @@
     ]]>      
   </insert>
 
+ <!-- 마이바티스 천천히 연습 했던 옵션 중에 하나, 
+ 추가시 , 한번에 여러개를 디비에 저장하는 기능. 
+ 맵에 담겨진, 여러 이미지를 imageVO 타입으로 해서, 추가하기. -->
  
    <insert id="insertNewImage"  parameterType="java.util.Map">
     <foreach item="item"  collection="list"   open="INSERT ALL" 
@@ -99,8 +121,8 @@
       VALUES (#{item.imageFileNO}, #{item.imageFileName}, #{item.articleNO}, sysdate)
     </foreach>
   </insert>
- -->
- 
+
+ <!-- 이미지 테이블의 갯수를 반환, 새 이미지 번호를 알려주는 sql  -->
   <select id="selectNewImageFileNO" resultType="int"  >
     <![CDATA[
       SELECT  nvl(max(imageFileNO),0) from t_imageFile		

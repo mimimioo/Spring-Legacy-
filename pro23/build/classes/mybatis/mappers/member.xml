@@ -38,7 +38,6 @@
          select * from t_member	order by joinDate desc	 	
       ]]>
 	</select>
-<<<<<<< HEAD
 
 
 <!-- 저희 샘플 디비에는 아이디가 hong 이 없음. 샘플 데이터, 
@@ -56,14 +55,6 @@
 	    where id = 'a2'
 	 ]]>
 	 </select> 
-=======
-	<!-- 과제0907 -->
-	<select id="selectAllMemberList2" resultMap="memResult">
-      <![CDATA[
-         select * from t_member 	
-      ]]>
-	</select>
->>>>>>> branch 'homework' of https://github.com/Lian-OwO/SpringLegacy-.git
 	 
 	 <!-- 과제 selectDate -->
 	 	<select id="selectDate" resultType="String" >
@@ -88,6 +79,14 @@
          id=#{id}			
       ]]>
 	 </select>	
+	 
+	 	<select id="selectMemberByName" resultMap="memResult"  parameterType="String" >
+      <![CDATA[
+         select * from t_member
+         where
+         name=#{id}			
+      ]]>
+	 </select>	
 	
 	<select id="selectMemberByPwd" resultMap="memResult"  parameterType="int" >
       <![CDATA[
@@ -97,34 +96,24 @@
       ]]>
     </select>
     
-   <!--  손주원 0911 실습과제
-    <select id="selectMemberByName" resultMap="memResult"  parameterType="String" >
-      <![CDATA[
-         select * from t_member
-         where
-         name = #{name}			
-      ]]>
-    </select>
-    
-    <select id="selectMemberByEmail" resultMap="memResult"  parameterType="String" >
-      <![CDATA[
-         select * from t_member
-         where
-         email = #{email}			
-      ]]>
-    </select> -->
-    
+    <!-- 실제 데이터 추가하는 작업, 현제 동네 3번째, 
+    업무 : 디비에 실제 데이터를 입력하는 sql 문장을 관리하는 일.  -->
+    <!-- 등록일 추가하는 방법에 여러가지.
+    1) 응용(백 부분에 추가, 서블릿에서 추가)
+    2) 디비(함수등 이용해서 처리) 
+    디비에서 최대한 가공해서, 데이터를 백으로 전달하는 방식 매우매우 추천.!!!!!!
+    -->
      <insert id="insertMember"  parameterType="memberVO">
 		<![CDATA[
-		 insert into t_member(id,pwd, name, email)
-		 values(#{id}, #{pwd}, #{name}, #{email})
+		 insert into t_member(id,pwd, name, email, joinDate)
+		 values(#{id}, #{pwd}, #{name}, #{email}, sysdate)
 		]]>      
 	</insert>
 	
 	<insert id="insertMember2"  parameterType="java.util.Map">
 		<![CDATA[
-			 insert into t_member(id,pwd, name, email)
-			 values(#{id}, #{pwd}, #{name}, #{email})
+			 insert into t_member(id,pwd, name, email,joinDate)
+			 values(#{id}, #{pwd}, #{name}, #{email},sysdate)
 		]]>      
    </insert>
    
@@ -200,12 +189,16 @@
       ]]>
       
       where name in
+      <!-- item 목록 안에 요소, abc1, abc2, abc3 들어 있고, 반복문으로 하나씩 꺼내서 나열하기. -->
       <foreach item="item" collection="list" open="(" separator="," close=")" >
          #{item}
       </foreach>
       order by joinDate desc
    </select>
    
+   <!-- 한번에 여러 임시 데이터 넣는 예제 -->
+   <!-- m1,m2,m3 라는 인스턴스 목록의 요소가 들어있고, ->list 
+   여기서 하나씩 꺼내서 item 에 담아서 반복 작업 합니다. -->
    <insert id="foreachInsert"  parameterType="java.util.Map">
       <foreach item="item"  collection="list"   open="INSERT ALL" separator=" " close="SELECT * FROM DUAL" >
           INTO  t_member(id, pwd, name, email)
@@ -233,24 +226,4 @@
          name like '%' || #{name} || '%'		
       ]]>
     </select>
-    
-    
-    
-    
-    <select id="selectMemberByName" resultType="memberVO"  parameterType="String" >
-      <![CDATA[
-         select * from t_member
-         where
-         name=#{id}			
-      ]]>
-	 </select>	
-	 
-	     <select id="selectMemberByEmail" resultType="memberVO"  parameterType="String" >
-      <![CDATA[
-         select * from t_member
-         where
-         Email=#{id}			
-      ]]>
-	 </select>	
-	 
 </mapper>

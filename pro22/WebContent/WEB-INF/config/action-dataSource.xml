@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+  <!-- 여기는 오라클 서버에 접근하기위한 환경 설정에 관한 값들이
+  매번 이 값을 입력하는 것이 아니라, 서버가 켜질 때, 해당 인스턴스 로드 한다.  -->
+  <!-- 오라클 서버 드라이버 이름, 서버 주소, 계정, 패스워드 이것을 등록해서 사용함.  -->
+   <bean  id="propertyConfigurer"
+      class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
+      <property name="locations" >
+         <list>
+            <value>/WEB-INF/config/jdbc.properties</value>
+         </list>
+      </property>
+   </bean>
+   
+   <!-- 오라클 디비 서버에 접근하기위한 인스턴스 -->
+
+    <bean id="dataSource"
+		class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass"
+			value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+	
+	<!-- 이 부분은 memberDAO -> 데이터에 접근하기위한 단계 -->
+   <bean  id="memberDAO"   class="com.spring.member.dao.MemberDAOImpl" >
+      <property name="dataSource" ref="dataSource"  />
+   </bean> 
+</beans>
